@@ -41,3 +41,8 @@ python evaluate_kmeans.py
 | `hotchpotch/bekko-embedding-v1-a8m` | 106.0M | 2026 | **7.15** | **0.2273** | 0.2796 |
 | `sentence-transformers/multi-qa-mpnet-base-dot-v1` | 109.5M | 2022 | 39.75 | 0.1057 | 0.2230 |
 | `codefuse-ai/F2LLM-v2-160M` | 159.2M | 2026 | 52.27 | 0.0590 | 0.2276 |
+
+## Referencias
+
+- [BERTopic - Vectorizers](https://maartengr.github.io/BERTopic/getting_started/vectorizers/vectorizers.html)
+- [MTEB Leaderboard (Spanish v1 - Performance vs Size)](https://leaderboard.mteb.org/benchmark/MTEB(spa%2C%20v1)?tab=perf_size)
