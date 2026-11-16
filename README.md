@@ -12,6 +12,11 @@ uv run scripts/topic_modeling.py run \
   --input tweets.parquet --text-col text --id-col id \
   --sample 2000 --out-dir ./topic_run
 
+# Opcional: modo --slow para clustering más fino (~6.8x más lento)
+uv run scripts/topic_modeling.py run \
+  --input tweets.parquet --text-col text --id-col id \
+  --sample 2000 --slow --out-dir ./topic_run
+
 # 2. Inspeccionar ejemplos de un tópico
 uv run scripts/topic_modeling.py inspect \
   --clusters ./topic_run/clusters.parquet \

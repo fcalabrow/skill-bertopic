@@ -3,6 +3,7 @@
 # dependencies = [
 #   "bertopic",
 #   "pandas",
+#   "peft",
 #   "pyarrow",
 #   "sentence-transformers",
 # ]
@@ -12,12 +13,14 @@ import argparse
 import json
 import os
 import re
+import time
 
 import pandas as pd
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 
 MODEL_NAME = "hotchpotch/bekko-embedding-v1-a25m"
+SLOW_MODEL_NAME = "jinaai/jina-embeddings-v5-text-nano"
 
 _RT_RE = re.compile(r"\bRT\s+@\w+:?\s*", flags=re.IGNORECASE)
 _URL_RE = re.compile(r"https?://\S+|www\.\S+", flags=re.IGNORECASE)
@@ -32,6 +35,31 @@ def clean_tweet(text: str) -> str:
     text = _URL_RE.sub(" ", text)
     text = _MENTION_RE.sub(" ", text)
     return _WS_RE.sub(" ", text).strip()
+
+
+SPANISH_STOPWORDS = frozenset({
+    "a", "al", "algo", "algunas", "algunos", "ante", "antes", "como", "con", "contra",
+    "cual", "cuando", "de", "del", "desde", "donde", "dos", "durante", "e", "el",
+    "ella", "ellas", "ellos", "en", "entre", "era", "erais", "eran", "eras", "eres",
+    "es", "esa", "esas", "ese", "eso", "esos", "esta", "estaba", "estaban", "estado",
+    "estamos", "estan", "estar", "estas", "este", "esto", "estos", "estoy", "estuvo",
+    "está", "están", "fue", "fuera", "fueron", "fui", "fuimos", "ha", "había", "habían",
+    "han", "has", "hasta", "hay", "haya", "he", "hemos", "hizo", "hoy", "la", "las",
+    "le", "les", "lo", "los", "mas", "más", "me", "mi", "mis", "mucho", "muchos",
+    "muy", "nada", "ni", "no", "nos", "nosotras", "nosotros", "nuestra", "nuestras",
+    "nuestro", "nuestros", "o", "os", "otra", "otras", "otro", "otros", "para", "pero",
+    "poco", "por", "porque", "que", "qué", "quien", "quienes", "se", "sea", "sean",
+    "ser", "sera", "será", "si", "sí", "sido", "siendo", "sin", "sobre", "sois",
+    "somos", "son", "soy", "su", "sus", "suya", "suyas", "suyo", "suyos", "también",
+    "tan", "tanto", "te", "tenéis", "tenemos", "tener", "tengo", "ti", "tiene",
+    "tienen", "todo", "todos", "tu", "tus", "tuve", "tuviera", "tuvieron", "tuvo",
+    "tú", "un", "una", "unas", "uno", "unos", "vosotras", "vosotros", "vuestra",
+    "vuestras", "vuestro", "vuestros", "y", "ya", "yo",
+})
+
+
+def filter_stopwords(words: list[str], limit: int = 10) -> list[str]:
+    return [w for w in words if w.lower() not in SPANISH_STOPWORDS][:limit]
 
 
 def load_input(path: str, text_col: str | None, id_col: str | None) -> pd.DataFrame:
@@ -65,7 +93,14 @@ def cmd_run(args):
     cleaned_texts = [clean_tweet(t) for t in raw_texts]
     min_topic_size = max(5, min(50, int(0.015 * len(cleaned_texts))))
 
-    emb_model = SentenceTransformer(MODEL_NAME)
+    if args.slow:
+        emb_model = SentenceTransformer(
+            SLOW_MODEL_NAME,
+            trust_remote_code=True,
+            model_kwargs={"default_task": "clustering"},
+        )
+    else:
+        emb_model = SentenceTransformer(MODEL_NAME)
     topic_model = BERTopic(embedding_model=emb_model, min_topic_size=min_topic_size)
     topics, probs = topic_model.fit_transform(cleaned_texts)
 
@@ -84,7 +119,8 @@ def cmd_run(args):
     for _, row in info_df.iterrows():
         tid = int(row["Topic"])
         count = int(row["Count"])
-        words = [w for w, _ in (topic_model.get_topic(tid) or [])[:10]]
+        raw_words = [w for w, _ in (topic_model.get_topic(tid) or [])]
+        words = filter_stopwords(raw_words, limit=10)
         rep_docs = topic_model.get_representative_docs(tid) or []
         summary.append({
             "topic_id": tid,
@@ -121,6 +157,58 @@ def cmd_inspect(args):
             print(f"id={row['id']} | topic={row['topic']} | prob={row['topic_prob']:.3f}")
 
 
+_BENCHMARK_SENTENCE = (
+    "Hoy estuve leyendo las noticias sobre la economía argentina, el dólar, la inflación "
+    "y cómo impacta todo esto en el día a día de la gente en Buenos Aires."
+)[:140]
+
+
+def _count_docs(path: str) -> int:
+    ext = os.path.splitext(path)[1].lower()
+    if ext == ".txt":
+        with open(path, "r", encoding="utf-8") as f:
+            return sum(1 for line in f if line.strip())
+    if ext == ".csv":
+        return len(pd.read_csv(path, usecols=[0]))
+    if ext == ".parquet":
+        return len(pd.read_parquet(path, columns=[]))
+    raise ValueError(f"Unsupported input format: {ext}. Use .txt, .csv, or .parquet.")
+
+
+def cmd_estimate(args):
+    if args.n is not None:
+        n_docs = args.n
+    elif args.input:
+        n_docs = _count_docs(args.input)
+    else:
+        raise ValueError("Provide either --n or --input.")
+
+    if args.slow:
+        emb_model = SentenceTransformer(
+            SLOW_MODEL_NAME,
+            trust_remote_code=True,
+            model_kwargs={"default_task": "clustering"},
+        )
+    else:
+        emb_model = SentenceTransformer(MODEL_NAME)
+
+    emb_model.encode([_BENCHMARK_SENTENCE], show_progress_bar=False)
+
+    batch = [_BENCHMARK_SENTENCE] * 16
+    t0 = time.perf_counter()
+    emb_model.encode(batch, show_progress_bar=False)
+    elapsed = time.perf_counter() - t0
+
+    ms_per_sentence = (elapsed * 1000.0) / len(batch)
+    estimated_seconds = (ms_per_sentence * n_docs) / 1000.0
+    print(json.dumps({
+        "mode": "slow" if args.slow else "default",
+        "n_docs": n_docs,
+        "ms_per_sentence": round(ms_per_sentence, 2),
+        "estimated_embedding_seconds": round(estimated_seconds, 1),
+    }, indent=2))
+
+
 def main():
     parser = argparse.ArgumentParser(description="Exploratory BERTopic clustering tool")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -132,6 +220,14 @@ def main():
     p_run.add_argument("--sample", type=int, default=None, help="Sample size N")
     p_run.add_argument("--seed", type=int, default=42, help="Random seed")
     p_run.add_argument("--out-dir", default="./topic_run", help="Output directory")
+    p_run.add_argument(
+        "--slow",
+        action="store_true",
+        help=(
+            "Use a heavier, more accurate embedding model for finer clustering "
+            "(~6.8x slower than default mode)."
+        ),
+    )
     p_run.set_defaults(func=cmd_run)
 
     p_ins = sub.add_parser("inspect", help="Inspect samples from a topic")
@@ -143,6 +239,12 @@ def main():
     p_ins.add_argument("--text-col", default="text", help="Text column name")
     p_ins.add_argument("--id-col", default=None, help="ID column name")
     p_ins.set_defaults(func=cmd_inspect)
+
+    p_est = sub.add_parser("estimate", help="Estimate vectorization time for N documents")
+    p_est.add_argument("--n", type=int, default=None, help="Number of documents to estimate for")
+    p_est.add_argument("--input", default=None, help="Input file (.txt, .csv, .parquet) to count rows")
+    p_est.add_argument("--slow", action="store_true", help="Estimate using the slower, more accurate model")
+    p_est.set_defaults(func=cmd_estimate)
 
     args = parser.parse_args()
     args.func(args)

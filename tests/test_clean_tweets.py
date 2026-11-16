@@ -3,7 +3,7 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
-from topic_modeling import clean_tweet
+from topic_modeling import clean_tweet, filter_stopwords
 
 
 class TestCleanTweet(unittest.TestCase):
@@ -22,6 +22,16 @@ class TestCleanTweet(unittest.TestCase):
     def test_handles_non_string_and_empty(self):
         self.assertEqual(clean_tweet(""), "")
         self.assertEqual(clean_tweet(None), "")
+
+
+class TestFilterStopwords(unittest.TestCase):
+    def test_removes_spanish_stopwords_and_preserves_order(self):
+        words = ["de", "que", "inflación", "la", "argentina", "no", "dólar", "es", "economía"]
+        self.assertEqual(filter_stopwords(words), ["inflación", "argentina", "dólar", "economía"])
+
+    def test_respects_limit(self):
+        words = ["uno", "casa", "perro", "gato", "árbol"]
+        self.assertEqual(filter_stopwords(words, limit=2), ["casa", "perro"])
 
 
 if __name__ == "__main__":

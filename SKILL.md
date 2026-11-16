@@ -1,7 +1,7 @@
 ---
 name: bertopic-explorer
-description: Exploratory topic modeling and clustering on Spanish text/tweet datasets (.txt, .csv, .parquet) using BERTopic and hotchpotch/bekko-embedding-v1-a25m without loading full datasets into context.
-compatibility: Requires Python 3.11+, uv, pandas, bertopic, sentence-transformers, and pyarrow.
+description: Exploratory topic modeling and clustering on Spanish text/tweet datasets (.txt, .csv, .parquet) using BERTopic without loading full datasets into context.
+compatibility: Requires Python 3.11+, uv, pandas, bertopic, sentence-transformers, peft, and pyarrow.
 ---
 
 # BERTopic Explorer
@@ -22,8 +22,12 @@ Use this skill to discover topics autonomously in large text or tweet datasets (
    - Supports `.txt` (one document per line), `.csv`, and `.parquet`.
    - Automatically cleans tweets (URLs, `RT @user:`, `@mentions`) before vectorization.
    - Automatically sets `min_topic_size = max(5, min(50, int(0.015 * N)))`.
+   - **Speed vs. precision (`--slow`)**:
+     - Default mode uses a fast, lightweight embedding model.
+     - Pass `--slow` to use a heavier, more accurate embedding model for finer clustering (~6.8x slower).
+     - Optional: run `uv run scripts/topic_modeling.py estimate --n 2000 [--slow]` (or `--input data.parquet`) to benchmark vectorization speed on the current hardware before running on large datasets.
    - Outputs:
-     - `topic_run/topics_summary.json`: compact overview (`topic_id`, `count`, `pct`, `keywords`, `representative_docs`). Read this first.
+     - `topic_run/topics_summary.json`: compact overview (`topic_id`, `count`, `pct`, `keywords` with Spanish stopwords filtered out, `representative_docs`). Read this first.
      - `topic_run/clusters.parquet`: `id`, `topic`, `topic_prob` (no duplicated text).
 
 2. **Inspect specific topics**:
