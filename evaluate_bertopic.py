@@ -9,7 +9,6 @@ from huggingface_hub import HfApi
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics import (
     adjusted_rand_score,
-    normalized_mutual_info_score,
     v_measure_score,
 )
 
@@ -87,13 +86,12 @@ def main():
     for model_name in MODELS:
         print(f"=== Processing: {model_name} ===")
         entry = results_map.get(model_name, {})
-        if "nmi" in entry and "v_measure" in entry and "ms_per_sent" in entry:
+        if "v_measure" in entry and "ms_per_sent" in entry:
             print("Using cached results.")
             print(
                 f"Size: {entry['size']} | Year: {entry['year']} | Speed: {entry['ms_per_sent']:.2f} ms/sent | "
                 f"Topics: {entry['topics']} | Outliers: {entry['outliers']}/{len(texts)} | "
-                f"ARI (multi): {entry['ari_multilabel']:.4f} | NMI: {entry['nmi']:.4f} | "
-                f"V-measure: {entry['v_measure']:.4f}\n"
+                f"ARI (multi): {entry['ari_multilabel']:.4f} | V-measure: {entry['v_measure']:.4f}\n"
             )
             continue
 
@@ -117,7 +115,6 @@ def main():
 
         ari_multilabel = adjusted_rand_score(resolved_labels, topics)
         ari_labelset = adjusted_rand_score(label_sets, topics)
-        nmi = normalized_mutual_info_score(resolved_labels, topics)
         v_meas = v_measure_score(resolved_labels, topics)
 
         entry = {
@@ -128,7 +125,6 @@ def main():
             "outliers": n_outliers,
             "ari_multilabel": ari_multilabel,
             "ari_labelset": ari_labelset,
-            "nmi": nmi,
             "v_measure": v_meas,
         }
         results_map[model_name] = entry
@@ -139,12 +135,12 @@ def main():
         print(
             f"Size: {size_str} | Year: {year} | Speed: {ms_per_sent:.2f} ms/sent | "
             f"Topics: {n_topics} | Outliers: {n_outliers}/{len(texts)} | "
-            f"ARI (multi): {ari_multilabel:.4f} | NMI: {nmi:.4f} | V-measure: {v_meas:.4f}\n"
+            f"ARI (multi): {ari_multilabel:.4f} | V-measure: {v_meas:.4f}\n"
         )
 
     header = (
         f"{'Model':<48} | {'Size':>6} | {'Year':>4} | {'ms/sent':>7} | "
-        f"{'Topics':>6} | {'Outliers':>8} | {'ARI (multi)':>11} | {'NMI':>6} | {'V-meas':>6}"
+        f"{'Topics':>6} | {'Outliers':>8} | {'ARI (multi)':>11} | {'V-meas':>6}"
     )
     sep = "-" * len(header)
     lines = ["=== Summary ===", header, sep]
@@ -153,7 +149,7 @@ def main():
         lines.append(
             f"{m:<48} | {r['size']:>6} | {r['year']:>4} | {r['ms_per_sent']:>7.2f} | "
             f"{r['topics']:>6} | {r['outliers']:>8} | "
-            f"{r['ari_multilabel']:>11.4f} | {r['nmi']:>6.4f} | {r['v_measure']:>6.4f}"
+            f"{r['ari_multilabel']:>11.4f} | {r['v_measure']:>6.4f}"
         )
 
     summary_text = "\n".join(lines)

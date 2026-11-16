@@ -8,7 +8,6 @@ from sentence_transformers import SentenceTransformer
 from sklearn.cluster import KMeans
 from sklearn.metrics import (
     adjusted_rand_score,
-    normalized_mutual_info_score,
     v_measure_score,
 )
 
@@ -96,7 +95,6 @@ def main():
 
         resolved_labels = optimistic_single_labels(multi_labels, clusters)
         ari = adjusted_rand_score(resolved_labels, clusters)
-        nmi = normalized_mutual_info_score(resolved_labels, clusters)
         v_meas = v_measure_score(resolved_labels, clusters)
 
         results_map[model_name] = {
@@ -105,12 +103,11 @@ def main():
             "ms_per_sent": ms_per_sent,
             "k": num_classes,
             "ari": ari,
-            "nmi": nmi,
             "v_measure": v_meas,
         }
         print(
             f"Size: {size_str} | Year: {year} | Speed: {ms_per_sent:.2f} ms/sent | "
-            f"ARI: {ari:.4f} | NMI: {nmi:.4f} | V-measure: {v_meas:.4f}\n"
+            f"ARI: {ari:.4f} | V-measure: {v_meas:.4f}\n"
         )
 
     with open(RESULTS_JSON, "w", encoding="utf-8") as f:
@@ -118,7 +115,7 @@ def main():
 
     header = (
         f"{'Model':<48} | {'Size':>6} | {'Year':>4} | {'ms/sent':>7} | "
-        f"{'k':>2} | {'ARI':>6} | {'NMI':>6} | {'V-meas':>6}"
+        f"{'k':>2} | {'ARI':>6} | {'V-meas':>6}"
     )
     sep = "-" * len(header)
     lines = ["=== K-Means Summary ===", header, sep]
@@ -126,7 +123,7 @@ def main():
         r = results_map[m]
         lines.append(
             f"{m:<48} | {r['size']:>6} | {r['year']:>4} | {r['ms_per_sent']:>7.2f} | "
-            f"{r['k']:>2} | {r['ari']:>6.4f} | {r['nmi']:>6.4f} | {r['v_measure']:>6.4f}"
+            f"{r['k']:>2} | {r['ari']:>6.4f} | {r['v_measure']:>6.4f}"
         )
 
     summary_text = "\n".join(lines)
