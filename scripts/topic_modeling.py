@@ -38,23 +38,26 @@ def clean_tweet(text: str) -> str:
 
 
 SPANISH_STOPWORDS = frozenset({
-    "a", "al", "algo", "algunas", "algunos", "ante", "antes", "como", "con", "contra",
-    "cual", "cuando", "de", "del", "desde", "donde", "dos", "durante", "e", "el",
-    "ella", "ellas", "ellos", "en", "entre", "era", "erais", "eran", "eras", "eres",
-    "es", "esa", "esas", "ese", "eso", "esos", "esta", "estaba", "estaban", "estado",
-    "estamos", "estan", "estar", "estas", "este", "esto", "estos", "estoy", "estuvo",
-    "está", "están", "fue", "fuera", "fueron", "fui", "fuimos", "ha", "había", "habían",
-    "han", "has", "hasta", "hay", "haya", "he", "hemos", "hizo", "hoy", "la", "las",
-    "le", "les", "lo", "los", "mas", "más", "me", "mi", "mis", "mucho", "muchos",
-    "muy", "nada", "ni", "no", "nos", "nosotras", "nosotros", "nuestra", "nuestras",
-    "nuestro", "nuestros", "o", "os", "otra", "otras", "otro", "otros", "para", "pero",
-    "poco", "por", "porque", "que", "qué", "quien", "quienes", "se", "sea", "sean",
-    "ser", "sera", "será", "si", "sí", "sido", "siendo", "sin", "sobre", "sois",
-    "somos", "son", "soy", "su", "sus", "suya", "suyas", "suyo", "suyos", "también",
-    "tan", "tanto", "te", "tenéis", "tenemos", "tener", "tengo", "ti", "tiene",
-    "tienen", "todo", "todos", "tu", "tus", "tuve", "tuviera", "tuvieron", "tuvo",
-    "tú", "un", "una", "unas", "uno", "unos", "vosotras", "vosotros", "vuestra",
-    "vuestras", "vuestro", "vuestros", "y", "ya", "yo",
+    # Preposiciones
+    "a", "ante", "bajo", "con", "contra", "de", "del", "desde", "durante", "en",
+    "entre", "hacia", "hasta", "mediante", "para", "por", "según", "sin", "sobre", "tras",
+    # Coordinantes / conjunciones
+    "y", "e", "o", "u", "ni", "pero", "sino", "mas", "aunque", "porque", "como", "cuando",
+    # Determinantes y artículos
+    "al", "el", "la", "los", "las", "lo", "un", "una", "unos", "unas",
+    # Pronombres
+    "algo", "alguien", "alguna", "algunas", "alguno", "algunos", "aquel", "aquella",
+    "aquellas", "aquello", "aquellos", "conmigo", "consigo", "contigo", "cual", "cuales",
+    "cuál", "cuáles", "cuya", "cuyas", "cuyo", "cuyos", "el", "ella", "ellas", "ello",
+    "ellos", "esa", "esas", "ese", "eso", "esos", "esta", "estas", "este", "esto",
+    "estos", "la", "las", "le", "les", "lo", "los", "me", "mi", "mí", "mía", "mías",
+    "mío", "míos", "nada", "nadie", "ninguna", "ningunas", "ninguno", "ningunos", "nos",
+    "nosotras", "nosotros", "nuestra", "nuestras", "nuestro", "nuestros", "os", "otra",
+    "otras", "otro", "otros", "que", "qué", "quien", "quienes", "quién", "quiénes",
+    "se", "si", "sí", "su", "sus", "suya", "suyas", "suyo", "suyos", "te", "ti",
+    "toda", "todas", "todo", "todos", "tu", "tú", "tuya", "tuyas", "tuyo", "tuyos",
+    "una", "unas", "uno", "unos", "usted", "ustedes", "vos", "vosotras", "vosotros",
+    "vuestra", "vuestras", "vuestro", "vuestros", "yo", "él",
 })
 
 

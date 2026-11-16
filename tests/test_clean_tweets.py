@@ -26,7 +26,7 @@ class TestCleanTweet(unittest.TestCase):
 
 class TestFilterStopwords(unittest.TestCase):
     def test_removes_spanish_stopwords_and_preserves_order(self):
-        words = ["de", "que", "inflación", "la", "argentina", "no", "dólar", "es", "economía"]
+        words = ["de", "que", "inflación", "la", "argentina", "y", "dólar", "un", "economía"]
         self.assertEqual(filter_stopwords(words), ["inflación", "argentina", "dólar", "economía"])
 
     def test_respects_limit(self):
