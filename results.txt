@@ -1,0 +1,17 @@
+Loaded 1000 Spanish tweets.
+
+=== Evaluating: hotchpotch/bekko-embedding-v1-a8m ===
+Topics: 6 | Outliers: 317/1000 | ARI (multilabel valid): 0.2335 | ARI (exact label-set): 0.0988
+
+=== Evaluating: codefuse-ai/F2LLM-v2-160M ===
+Topics: 2 | Outliers: 111/1000 | ARI (multilabel valid): 0.0474 | ARI (exact label-set): 0.0069
+
+=== Evaluating: sentence-transformers/multi-qa-mpnet-base-dot-v1 ===
+Topics: 12 | Outliers: 679/1000 | ARI (multilabel valid): 0.1150 | ARI (exact label-set): 0.0032
+
+=== Summary ===
+Model                                            | Topics | Outliers | ARI (multi) | ARI (set)
+--------------------------------------------------------------------------------------------
+hotchpotch/bekko-embedding-v1-a8m                |      6 |      317 |      0.2335 |    0.0988
+codefuse-ai/F2LLM-v2-160M                        |      2 |      111 |      0.0474 |    0.0069
+sentence-transformers/multi-qa-mpnet-base-dot-v1 |     12 |      679 |      0.1150 |    0.0032
