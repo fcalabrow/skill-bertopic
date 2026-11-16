@@ -1,6 +1,6 @@
 ---
 name: bertopic-explorer
-description: Exploratory topic modeling and clustering on Spanish text/tweet datasets (.txt, .csv, .parquet) using BERTopic without loading full datasets into context.
+description: Exploratory topic modeling and clustering optimized for short Spanish text (typically tweets) in .txt, .csv, or .parquet datasets using BERTopic without loading full datasets into context.
 compatibility: Requires Python 3.11+, uv, pandas, bertopic, sentence-transformers, peft, and pyarrow.
 ---
 
