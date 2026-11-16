@@ -44,6 +44,15 @@
       "outliers": 70,
       "ari": 0.44556854900560994,
       "v_measure": 0.6454843462886816
+    },
+    "sentence-transformers/static-similarity-mrl-multilingual-v1": {
+      "size": "108.4M",
+      "year": "2024",
+      "ms_per_sent": 0.04238940400045976,
+      "topics": 21,
+      "outliers": 146,
+      "ari": 0.31627256066067466,
+      "v_measure": 0.5467385753181628
     }
   },
   "kmeans": {
@@ -86,6 +95,14 @@
       "k": 16,
       "ari": 0.45765004230507744,
       "v_measure": 0.6381409695319025
+    },
+    "sentence-transformers/static-similarity-mrl-multilingual-v1": {
+      "size": "108.4M",
+      "year": "2024",
+      "ms_per_sent": 0.04238940400045976,
+      "k": 16,
+      "ari": 0.13923549876188004,
+      "v_measure": 0.3987226556240148
     }
   }
 }

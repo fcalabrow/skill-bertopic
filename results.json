@@ -57,5 +57,15 @@
     "ari_multilabel": 0.2793614762762971,
     "ari_labelset": 0.10359469439896321,
     "v_measure": 0.37193847049598255
+  },
+  "sentence-transformers/static-similarity-mrl-multilingual-v1": {
+    "size": "108.4M",
+    "year": "2024",
+    "ms_per_sent": 0.10483334499986086,
+    "topics": 16,
+    "outliers": 575,
+    "ari_multilabel": 0.010097798547601008,
+    "ari_labelset": 0.008205432388288093,
+    "v_measure": 0.12171016142388301
   }
 }

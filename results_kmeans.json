@@ -38,5 +38,13 @@
     "k": 19,
     "ari": 0.16763202092888435,
     "v_measure": 0.4448827224249534
+  },
+  "sentence-transformers/static-similarity-mrl-multilingual-v1": {
+    "size": "108.4M",
+    "year": "2024",
+    "ms_per_sent": 0.10483334499986086,
+    "k": 19,
+    "ari": 0.09224744858109574,
+    "v_measure": 0.1609767850132725
   }
 }

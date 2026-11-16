@@ -1,17 +1,19 @@
 === SIB200 (spa_Latn) - BERTopic ===
-Model                                            |   Size | Year | ms/sent | Topics | Outliers |    ARI | V-meas
-----------------------------------------------------------------------------------------------------------------
-hotchpotch/bekko-embedding-v1-a8m                | 106.0M | 2026 |    6.14 |     18 |      236 | 0.3400 | 0.5330
-hotchpotch/bekko-embedding-v1-a25m               | 123.2M | 2026 |   12.85 |     23 |      293 | 0.1682 | 0.4510
-codefuse-ai/F2LLM-v2-160M                        | 159.2M | 2026 |   53.70 |     14 |      346 | 0.3169 | 0.5018
-sentence-transformers/multi-qa-mpnet-base-dot-v1 | 109.5M | 2022 |   46.76 |     16 |      472 | 0.0562 | 0.2745
-jinaai/jina-embeddings-v5-text-nano              | 238.9M | 2026 |   74.11 |     23 |       61 | 0.2825 | 0.5223
+Model                                                    |   Size | Year | ms/sent | Topics | Outliers |    ARI | V-meas
+------------------------------------------------------------------------------------------------------------------------
+hotchpotch/bekko-embedding-v1-a8m                        | 106.0M | 2026 |    6.14 |     18 |      236 | 0.3400 | 0.5330
+hotchpotch/bekko-embedding-v1-a25m                       | 123.2M | 2026 |   12.85 |     23 |      293 | 0.1682 | 0.4510
+codefuse-ai/F2LLM-v2-160M                                | 159.2M | 2026 |   53.70 |     14 |      346 | 0.3169 | 0.5018
+sentence-transformers/multi-qa-mpnet-base-dot-v1         | 109.5M | 2022 |   46.76 |     16 |      472 | 0.0562 | 0.2745
+jinaai/jina-embeddings-v5-text-nano                      | 238.9M | 2026 |   74.11 |     23 |       61 | 0.2825 | 0.5223
+sentence-transformers/static-similarity-mrl-multilingual-v1 | 108.4M | 2024 |    0.10 |     16 |      414 | 0.1048 | 0.3287
 
 === SIB200 (spa_Latn) - K-Means ===
-Model                                            |   Size | Year | ms/sent |  k |    ARI | V-meas
--------------------------------------------------------------------------------------------------
-hotchpotch/bekko-embedding-v1-a8m                | 106.0M | 2026 |    6.14 |  7 | 0.3429 | 0.3943
-hotchpotch/bekko-embedding-v1-a25m               | 123.2M | 2026 |   12.85 |  7 | 0.4519 | 0.4591
-codefuse-ai/F2LLM-v2-160M                        | 159.2M | 2026 |   53.70 |  7 | 0.4330 | 0.4833
-sentence-transformers/multi-qa-mpnet-base-dot-v1 | 109.5M | 2022 |   46.76 |  7 | 0.1146 | 0.1946
-jinaai/jina-embeddings-v5-text-nano              | 238.9M | 2026 |   74.11 |  7 | 0.4728 | 0.5799
+Model                                                    |   Size | Year | ms/sent |  k |    ARI | V-meas
+---------------------------------------------------------------------------------------------------------
+hotchpotch/bekko-embedding-v1-a8m                        | 106.0M | 2026 |    6.14 |  7 | 0.3429 | 0.3943
+hotchpotch/bekko-embedding-v1-a25m                       | 123.2M | 2026 |   12.85 |  7 | 0.4519 | 0.4591
+codefuse-ai/F2LLM-v2-160M                                | 159.2M | 2026 |   53.70 |  7 | 0.4330 | 0.4833
+sentence-transformers/multi-qa-mpnet-base-dot-v1         | 109.5M | 2022 |   46.76 |  7 | 0.1146 | 0.1946
+jinaai/jina-embeddings-v5-text-nano                      | 238.9M | 2026 |   74.11 |  7 | 0.4728 | 0.5799
+sentence-transformers/static-similarity-mrl-multilingual-v1 | 108.4M | 2024 |    0.10 |  7 | 0.1344 | 0.1896
