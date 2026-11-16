@@ -1,0 +1,91 @@
+{
+  "bertopic": {
+    "hotchpotch/bekko-embedding-v1-a8m": {
+      "size": "106.0M",
+      "year": "2026",
+      "ms_per_sent": 6.136306033865088,
+      "topics": 18,
+      "outliers": 236,
+      "ari": 0.33996964798160945,
+      "v_measure": 0.5330098517474271
+    },
+    "hotchpotch/bekko-embedding-v1-a25m": {
+      "size": "123.2M",
+      "year": "2026",
+      "ms_per_sent": 12.848258870518071,
+      "topics": 23,
+      "outliers": 293,
+      "ari": 0.16821999122869333,
+      "v_measure": 0.45103233565918927
+    },
+    "codefuse-ai/F2LLM-v2-160M": {
+      "size": "159.2M",
+      "year": "2026",
+      "ms_per_sent": 53.70008010159307,
+      "topics": 14,
+      "outliers": 346,
+      "ari": 0.31685878699331077,
+      "v_measure": 0.5018371381830062
+    },
+    "sentence-transformers/multi-qa-mpnet-base-dot-v1": {
+      "size": "109.5M",
+      "year": "2022",
+      "ms_per_sent": 46.75537324103597,
+      "topics": 16,
+      "outliers": 472,
+      "ari": 0.056205048821975835,
+      "v_measure": 0.27451710887197295
+    },
+    "jinaai/jina-embeddings-v5-text-nano": {
+      "size": "238.9M",
+      "year": "2026",
+      "ms_per_sent": 74.11243639940238,
+      "topics": 23,
+      "outliers": 61,
+      "ari": 0.2825313378135205,
+      "v_measure": 0.5222864223897535
+    }
+  },
+  "kmeans": {
+    "hotchpotch/bekko-embedding-v1-a8m": {
+      "size": "106.0M",
+      "year": "2026",
+      "ms_per_sent": 6.136306033865088,
+      "k": 7,
+      "ari": 0.34285241285178564,
+      "v_measure": 0.39428567305053114
+    },
+    "hotchpotch/bekko-embedding-v1-a25m": {
+      "size": "123.2M",
+      "year": "2026",
+      "ms_per_sent": 12.848258870518071,
+      "k": 7,
+      "ari": 0.4519434868133646,
+      "v_measure": 0.45907145081546563
+    },
+    "codefuse-ai/F2LLM-v2-160M": {
+      "size": "159.2M",
+      "year": "2026",
+      "ms_per_sent": 53.70008010159307,
+      "k": 7,
+      "ari": 0.4329711514846566,
+      "v_measure": 0.48332753219530183
+    },
+    "sentence-transformers/multi-qa-mpnet-base-dot-v1": {
+      "size": "109.5M",
+      "year": "2022",
+      "ms_per_sent": 46.75537324103597,
+      "k": 7,
+      "ari": 0.1145764581447129,
+      "v_measure": 0.1945796871313122
+    },
+    "jinaai/jina-embeddings-v5-text-nano": {
+      "size": "238.9M",
+      "year": "2026",
+      "ms_per_sent": 74.11243639940238,
+      "k": 7,
+      "ari": 0.4728028125698648,
+      "v_measure": 0.5798999300006443
+    }
+  }
+}
